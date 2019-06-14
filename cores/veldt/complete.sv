@@ -9,7 +9,7 @@ module testbench (
 
   `RVFI_WIRES
 
-  DecodeFV dut (
+  VeldtFV dut (
     .clock (clk),
     .reset (reset),
     .word (instr),
