@@ -14,34 +14,36 @@ verilog_defines -D RISCV_FORMAL_XLEN=32
 verilog_defines -D RISCV_FORMAL_ILEN=32
 verilog_defines -D RISCV_FORMAL_ALIGNED_MEM
 read_verilog -sv rvfi_macros.vh
-read_verilog -sv DecodeFV.v
-read_verilog -sv DecodeFV_getRd.v
-read_verilog -sv DecodeFV_getRs1.v
-read_verilog -sv DecodeFV_getRs2.v
+read_verilog -sv Core_coreT.v
+read_verilog -sv Core_loadAddr.v
 read_verilog -sv Decode_parseInstr.v
+read_verilog -sv Regs_csrFile.v
+read_verilog -sv Regs_regBank.v
+read_verilog -sv VeldtFV.v
 
 --pycode-begin--
-with open("../../insns/isa_rv32im.txt") as f:
+with open("../../insns/isa_rv32i.txt") as f:
   for line in f:
     output("read_verilog -sv insn_%s.v" % line.strip())
 --pycode-end--
 
-read_verilog -sv isa_rv32im.v
+read_verilog -sv isa_rv32i.v
 read_verilog -sv complete.sv
 prep -nordff -top testbench
 
 [files]
 complete.sv
-~/eda/clash/veldt/verilog/DecodeFV/DecodeFV/DecodeFV.v
-~/eda/clash/veldt/verilog/DecodeFV/DecodeFV/DecodeFV_getRd.v
-~/eda/clash/veldt/verilog/DecodeFV/DecodeFV/DecodeFV_getRs1.v
-~/eda/clash/veldt/verilog/DecodeFV/DecodeFV/DecodeFV_getRs2.v
-~/eda/clash/veldt/verilog/DecodeFV/DecodeFV/Decode_parseInstr.v
+~/eda/clash/veldt/verilog/VeldtFV/VeldtFV/Core_coreT.v
+~/eda/clash/veldt/verilog/VeldtFV/VeldtFV/Core_loadAddr.v
+~/eda/clash/veldt/verilog/VeldtFV/VeldtFV/Decode_parseInstr.v
+~/eda/clash/veldt/verilog/VeldtFV/VeldtFV/Regs_csrFile.v
+~/eda/clash/veldt/verilog/VeldtFV/VeldtFV/Regs_regBank.v
+~/eda/clash/veldt/verilog/VeldtFV/VeldtFV/VeldtFV.v
 ../../checks/rvfi_macros.vh
-../../insns/isa_rv32im.v
+../../insns/isa_rv32i.v
 
 --pycode-begin--
-with open("../../insns/isa_rv32im.txt") as f:
+with open("../../insns/isa_rv32i.txt") as f:
   for line in f:
     output("../../insns/insn_%s.v" % line.strip())
 --pycode-end--

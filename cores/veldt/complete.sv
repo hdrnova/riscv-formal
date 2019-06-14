@@ -1,21 +1,21 @@
 module testbench (
   input clk,
-  input [31:0] instr		 
+  input [31:0] instr
 );
   reg reset = 1;
-   
+
   always @(posedge clk)
     reset <= 0;
 
   `RVFI_WIRES
-   
+
   DecodeFV dut (
     .clock (clk),
     .reset (reset),
     .word (instr),
     `RVFI_CONN
   );
-   
+
   (* keep *) wire spec_valid;
   (* keep *) wire spec_trap;
   (* keep *) wire [4 : 0] spec_rs1_addr;
@@ -28,7 +28,7 @@ module testbench (
   (* keep *) wire [`RISCV_FORMAL_XLEN/8 - 1 : 0] spec_mem_wmask;
   (* keep *) wire [`RISCV_FORMAL_XLEN - 1 : 0] spec_mem_wdata;
 
-  rvfi_isa_rv32im isa_spec (
+  rvfi_isa_rv32i isa_spec (
     .rvfi_valid    (rvfi_valid    ),
     .rvfi_insn     (rvfi_insn     ),
     .rvfi_pc_rdata (rvfi_pc_rdata ),
@@ -57,5 +57,3 @@ module testbench (
     end
   end
 endmodule
-  
-       
