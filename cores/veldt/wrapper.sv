@@ -3,15 +3,15 @@ module rvfi_wrapper (
 	input         reset,
 	`RVFI_OUTPUTS
 );
-	(* keep *) `rvformal_rand_reg [31:0] mem_rdata;
-	(* keep *) `rvformal_rand_reg [31:0] mem_instr;
+	(* keep *) wire [31:0] ramData;
+	(* keep *) wire [31:0] instr;
 
 	VeldtFV uut (
-		.clock     (clock),
-		.reset     (reset),
-    .word      (mem_instr),
-		.ramOut    (mem_rdata),
-		`RVFI_CONN
+	  .clock     (clock),
+	  .reset     (reset),
+          .word      (instr),
+          .ramOut    (ramData),
+	  `RVFI_CONN
 	);
 
 endmodule
