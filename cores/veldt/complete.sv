@@ -1,7 +1,6 @@
 module testbench (
   input clk,
-  input [31:0] instr,
-  input [31:0] ramOut
+  input [31:0] instr
 );
   reg reset = 1;
 
@@ -14,7 +13,6 @@ module testbench (
     .clock (clk),
     .reset (reset),
     .word (instr),
-    .ramOut (ramOut),
     `RVFI_CONN
   );
 
