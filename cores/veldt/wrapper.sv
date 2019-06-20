@@ -4,11 +4,13 @@ module rvfi_wrapper (
 	`RVFI_OUTPUTS
 );
 	(* keep *) wire [31:0] instr;
+	(* keep *) wire [31:0] ramOut;
 
 	VeldtFV uut (
 	  .clock     (clock),
 	  .reset     (reset),
-          .word      (instr),
+    .word      (instr),
+		.ramOut    (ramOut),
 	  `RVFI_CONN
 	);
 
