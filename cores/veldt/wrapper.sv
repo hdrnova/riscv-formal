@@ -3,8 +3,8 @@ module rvfi_wrapper (
 	input         reset,
 	`RVFI_OUTPUTS
 );
-	(* keep *) wire [31:0] instr;
-	
+	(* keep *) `rvformal_rand_reg [31:0] instr;
+
 	VeldtFV uut (
 	  .clock     (clock),
 	  .reset     (reset),
