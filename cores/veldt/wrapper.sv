@@ -4,7 +4,7 @@ module rvfi_wrapper (
 	`RVFI_OUTPUTS
 );
 	(* keep *) `rvformal_rand_reg [31:0] instr;
-	(* keep *) `rvforaml_rand_reg [31:0] ramOut;
+	(* keep *) `rvformal_rand_reg [31:0] ramOut;
 
 	VeldtFV uut (
 	  .clock     (clock),
