@@ -3,7 +3,7 @@ module rvfi_wrapper (
 	input         reset,
 	`RVFI_OUTPUTS
 );
-	(* keep *) `rvformal_rand_reg [31:0] instr;
+	(* keep *) wire               [31:0] instr;
 	(* keep *) `rvformal_rand_reg [31:0] ramOut;
 	(* keep *) wire               [31:0] pc;
 	(* keep *) wire               [96:0] ramIn;
