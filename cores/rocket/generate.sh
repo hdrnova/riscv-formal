@@ -11,10 +11,14 @@ enable_inithack=true
 enable_64bits=true
 enable_muldiv=true
 enable_misa=true
+enable_pmp=false
 
 if [ ! -d rocket-chip ]; then
 	git clone --recurse-submodules git@github.com:sifive/rocket-chip-grand-central.git rocket-chip
 	cd rocket-chip
+
+	# git checkout bc22847
+	# git submodule update --recursive
 
 	if $enable_compressed; then
 		( cd ../../../monitor && python3 generate.py -i rv$(if $enable_64bits; then echo 64; else echo 32; fi)ic -p RVFIMonitor -c 2; ) > src/main/resources/vsrc/RVFIMonitor.v
@@ -35,6 +39,10 @@ if [ ! -d rocket-chip ]; then
 		sed -i -e '/DefaultConfigWithRVFIMonitors/,/^)/ { /freechips.rocketchip.tile.XLen/ s,32,64,; }' src/main/scala/system/Configs.scala
 	else
 		sed -i -e '/DefaultConfigWithRVFIMonitors/,/^)/ { /freechips.rocketchip.tile.XLen/ s,64,32,; }' src/main/scala/system/Configs.scala
+	fi
+
+	if ! $enable_pmp; then
+		sed -i -e '/DefaultConfigWithRVFIMonitors/,/^)/ { /new WithNPMP/ s/[0-9]\+/0/; };' src/main/scala/system/Configs.scala
 	fi
 
 	sed -i 's/--top-module/-Wno-fatal &/' emulator/Makefrag-verilator
@@ -71,6 +79,7 @@ verific -vlog-define RISCV_FORMAL
 verific -vlog-define RISCV_FORMAL_NRET=2
 verific -vlog-define RISCV_FORMAL_XLEN=$(if $enable_64bits; then echo 64; else echo 32; fi)
 verific -vlog-define RISCV_FORMAL_ILEN=32
+verific -vlog-define RISCV_FORMAL_UMODE
 verific -vlog-define RISCV_FORMAL_EXTAMO
 verific -vlog-define RISCV_FORMAL_CSR_MCYCLE
 verific -vlog-define RISCV_FORMAL_CSR_MINSTRET
@@ -121,11 +130,11 @@ dumpsmt2
 [depth]
 insn    $(if $enable_inithack; then echo "      20"; else echo "      35"; fi)
 ill     $(if $enable_inithack; then echo "      20"; else echo "      35"; fi)
-reg     $(if $enable_inithack; then echo "10    20"; else echo "25    35"; fi)
+reg     $(if $enable_inithack; then echo " 5    15"; else echo "20    30"; fi)
 pc_fwd  $(if $enable_inithack; then echo " 5    15"; else echo "20    30"; fi)
 pc_bwd  $(if $enable_inithack; then echo " 5    15"; else echo "20    30"; fi)
 unique  $(if $enable_inithack; then echo "10 15 20"; else echo "25 30 35"; fi)
-causal  $(if $enable_inithack; then echo "10    20"; else echo "25    35"; fi)
+causal  $(if $enable_inithack; then echo " 5    15"; else echo "20    30"; fi)
 hang    $(if $enable_inithack; then echo "10    40"; else echo "20    50"; fi)
 
 reg_ch1 $(if $enable_inithack; then echo " 5    15"; else echo "20    30"; fi)
@@ -138,14 +147,14 @@ minstret
 misa
 
 [sort]
-(reg|causal)_ch1
-insn_(lb|lbu|lh|lhu|lw|lwu|ld|c_lw|c_lwsp|c_ld|c_ldsp)_ch1
-pc_(bwd|fwd)_ch1
-reg_ch0
+hang
+(reg|causal)_ch?
+insn_.*_ch1
 
 [defines]
 \`define ROCKET_NORESET
 \`define RISCV_FORMAL_VALIDADDR(addr) ({31{addr[32]}} == addr[63:33])
+\`define RISCV_FORMAL_WAITINSN(insn) ((insn) == 32'b_0011000_00101_00000_000_00000_1110011)
 \`define RISCV_FORMAL_PMA_MAP rocket_pma_map
 \`define RISCV_FORMAL_EXTAMO
 \`define RISCV_FORMAL_ALTOPS
@@ -158,7 +167,7 @@ read_ilang @basedir@/cores/@core@/@core@-syn/@ilang_file@
 [filter-checks]
 + insn_(lb|lbu|lh|lhu|lw|lwu|ld|c_lw|c_lwsp|c_ld|c_ldsp)_ch1
 + insn_(mul|mulh|mulhsu|mulhu|div|divu|rem|remu|mulw|divw|divuw|remw|remuw)_ch1
-- (insn_.*|ill)_ch1
+- (insn_.*|csrw_.*|ill)_ch1
 EOT
 
 python3 ../../checks/genchecks.py

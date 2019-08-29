@@ -12,9 +12,12 @@ while read dir; do echo "$dir	$(git -C $dir log -n1 --oneline)"; \
 
 cp rocket-chip/vsim/generated-src/freechips.rocketchip.system.DefaultConfigWithRVFIMonitors.v $cexdata/rocketchip.v
 cp rocket-chip/vsim/generated-src/freechips.rocketchip.system.DefaultConfigWithRVFIMonitors.fir $cexdata/rocketchip.fir
+gzip $cexdata/rocketchip.v $cexdata/rocketchip.fir
+
 cp rocket-chip/src/main/scala/system/Configs.scala $cexdata/Configs.scala
 git -C rocket-chip diff src/main/scala/system/Configs.scala > $cexdata/Configs.scala.diff
-cp rocket-syn/init.vcd $cexdata/init.vcd
+
+vcd2fst rocket-syn/init.vcd $cexdata/init.fst
 
 for x in checks/*/FAIL coverage/FAIL; do
 	test -f $x || continue
@@ -29,6 +32,8 @@ for x in checks/*/FAIL coverage/FAIL; do
 		if grep -q "^isa rv32" checks.cfg; then
 			python3 disasm.py $cexdata/$y.vcd > $cexdata/$y.asm
 		fi
+		vcd2fst $cexdata/$y.vcd $cexdata/$y.fst
+		rm -f $cexdata/$y.vcd
 	fi
 done
 
@@ -36,9 +41,11 @@ for x in checks/*.sby; do
 	x=${x%.sby}
 	x=${x#checks/}
 	if [ -f checks/$x/PASS ]; then
-		printf "%-20s %s %10s\n" $x pass $(sed '/Elapsed process time/ { s/.*\]: //; s/ .*//; p; }; d;' checks/$x/logfile.txt)
+		printf "%-20s %s %10s\n" $x pass  $(sed '/Elapsed process time/ { s/.*\]: //; s/ .*//; p; }; d;' checks/$x/logfile.txt)
 	elif [ -f checks/$x/FAIL ]; then
-		printf "%-20s %s %10s\n" $x FAIL $(sed '/Elapsed process time/ { s/.*\]: //; s/ .*//; p; }; d;' checks/$x/logfile.txt)
+		printf "%-20s %s %10s\n" $x FAIL  $(sed '/Elapsed process time/ { s/.*\]: //; s/ .*//; p; }; d;' checks/$x/logfile.txt)
+	elif [ -f checks/$x/ERROR ]; then
+		printf "%-20s %s %10s\n" $x ERROR $(sed '/Elapsed process time/ { s/.*\]: //; s/ .*//; p; }; d;' checks/$x/logfile.txt)
 	else
 		printf "%-20s %s\n" $x unknown
 	fi

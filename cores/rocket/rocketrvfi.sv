@@ -47,10 +47,7 @@ module RocketTileWithRVFI (
 	input         tl_master_d_bits_sink,
 	input         tl_master_d_bits_denied,
 	input  [63:0] tl_master_d_bits_data,
-	input         tl_master_d_bits_corrupt,
-
-	input         constants_hartid,
-	input  [31:0] constants_reset_vector
+	input         tl_master_d_bits_corrupt
 );
 	RocketTile rocket_tile (
 		.clock                                  (clock                    ),
@@ -100,10 +97,7 @@ module RocketTileWithRVFI (
 		.auto_tl_master_xing_out_d_bits_sink    (tl_master_d_bits_sink    ),
 		.auto_tl_master_xing_out_d_bits_denied  (tl_master_d_bits_denied  ),
 		.auto_tl_master_xing_out_d_bits_data    (tl_master_d_bits_data    ),
-		.auto_tl_master_xing_out_d_bits_corrupt (tl_master_d_bits_corrupt ),
-
-		.constants_hartid                       (constants_hartid         ),
-		.constants_reset_vector                 (constants_reset_vector   )
+		.auto_tl_master_xing_out_d_bits_corrupt (tl_master_d_bits_corrupt )
 	);
 
 	assign rvfi_valid                = rocket_tile.RVFI_valid;
@@ -113,6 +107,7 @@ module RocketTileWithRVFI (
 	assign rvfi_halt                 = rocket_tile.RVFI_halt;
 	assign rvfi_intr                 = rocket_tile.RVFI_intr;
 	assign rvfi_mode                 = rocket_tile.RVFI_mode;
+	assign rvfi_ixl                  = rocket_tile.RVFI_ixl;
 
 	assign rvfi_pc_rdata             = rocket_tile.RVFI_pc_rdata;
 	assign rvfi_pc_wdata             = rocket_tile.RVFI_pc_wdata;
@@ -138,10 +133,10 @@ module RocketTileWithRVFI (
 	assign rvfi_csr_misa_wdata       = rocket_tile.RVFI_csr_misa_wdata;
 	assign rvfi_csr_misa_rdata       = rocket_tile.RVFI_csr_misa_rdata;
 
-	assign rvfi_csr_minstret_wmask   = rocket_tile.RVFI_csr_instret_wmask;
-	assign rvfi_csr_minstret_rmask   = rocket_tile.RVFI_csr_instret_rmask;
-	assign rvfi_csr_minstret_wdata   = rocket_tile.RVFI_csr_instret_wdata;
-	assign rvfi_csr_minstret_rdata   = rocket_tile.RVFI_csr_instret_rdata;
+	assign rvfi_csr_minstret_wmask   = rocket_tile.RVFI_csr_minstret_wmask;
+	assign rvfi_csr_minstret_rmask   = rocket_tile.RVFI_csr_minstret_rmask;
+	assign rvfi_csr_minstret_wdata   = rocket_tile.RVFI_csr_minstret_wdata;
+	assign rvfi_csr_minstret_rdata   = rocket_tile.RVFI_csr_minstret_rdata;
 
 	assign rvfi_csr_mcycle_wmask     = rocket_tile.RVFI_csr_mcycle_wmask;
 	assign rvfi_csr_mcycle_rmask     = rocket_tile.RVFI_csr_mcycle_rmask;
