@@ -1,0 +1,26 @@
+[options]
+mode bmc
+
+depth 20
+
+[engines]
+smtbmc --presat --unroll boolector
+
+[script]
+verilog_defines -D DEBUGNETS
+verilog_defines -D RISCV_FORMAL
+verilog_defines -D RISCV_FORMAL_NRET=1
+verilog_defines -D RISCV_FORMAL_XLEN=32
+verilog_defines -D RISCV_FORMAL_ILEN=32
+verilog_defines -D RISCV_FORMAL_ALIGNED_MEM
+read_verilog -sv rvfi_macros.vh
+read_verilog -sv VeldtFV.v
+read_verilog -sv dmemcheck.sv
+read_verilog -sv rvfi_dmem_check.sv
+prep -nordff -top testbench
+
+[files]
+dmemcheck.sv
+~/eda/proj/veldt/verilog/VeldtFV/VeldtFV/VeldtFV.v
+../../checks/rvfi_macros.vh
+../../checks/rvfi_dmem_check.sv
