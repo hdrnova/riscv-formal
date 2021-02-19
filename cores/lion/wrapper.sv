@@ -10,7 +10,7 @@ module rvfi_wrapper (
    (* keep *) wire [31:0] mem_wdata;
    (* keep *) wire [3:0] mem_wstrb;
 
-	VeldtFV uut (
+	LionFV uut (
 	  .clock     (clock),
 	  .reset     (reset),
 		     .mem_valid (mem_valid),
