@@ -4,7 +4,6 @@ module rvfi_wrapper (
 	`RVFI_OUTPUTS
 );
    
-   (* keep *) `rvformal_rand_reg        mem_ready;
    (* keep *) `rvformal_rand_reg [31:0] mem_rdata;
 
    (* keep *) wire        mem_valid;
@@ -18,7 +17,6 @@ module rvfi_wrapper (
 	  .reset     (reset),
 		     .mem_valid (mem_valid),
 		     .mem_instr (mem_instr),
-                     .mem_ready (mem_ready),
 		     .mem_addr  (mem_addr),
 		     .mem_wdata (mem_wdata),
 		     .mem_wstrb (mem_wstrb),
