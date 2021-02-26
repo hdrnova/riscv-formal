@@ -14,13 +14,13 @@ verilog_defines -D RISCV_FORMAL_XLEN=32
 verilog_defines -D RISCV_FORMAL_ILEN=32
 verilog_defines -D RISCV_FORMAL_ALIGNED_MEM
 read_verilog -sv rvfi_macros.vh
-read_verilog -sv VeldtFV.v
+read_verilog -sv LionFV.v
 read_verilog -sv imemcheck.sv
 read_verilog -sv rvfi_imem_check.sv
 prep -nordff -top testbench
 
 [files]
 imemcheck.sv
-~/eda/proj/veldt/verilog/VeldtFV/VeldtFV/VeldtFV.v
+../../../_build/verilog/LionFV/LionFV/LionFV.v
 ../../checks/rvfi_macros.vh
 ../../checks/rvfi_imem_check.sv

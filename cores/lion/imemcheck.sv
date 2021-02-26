@@ -38,7 +38,7 @@ module testbench (
 		end
 	end
 
-	VeldtFV uut (
+	LionFV uut (
 		.clock         (clk           ),
 		.reset         (resetn        ),
 
