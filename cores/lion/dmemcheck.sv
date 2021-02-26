@@ -41,7 +41,7 @@ module testbench (
 			assume(dmem_data == mem_rdata);
 	end
 
-	VeldtFV uut (
+	LionFV uut (
 		.clock          (clk           ),
 		.reset          (reset         ),
                 
