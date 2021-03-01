@@ -3,14 +3,16 @@ module rvfi_wrapper (
 	input         reset,
 	`RVFI_OUTPUTS
 );
-	(* keep *) `rvformal_rand_reg [31:0] mem_rdata;
-   (* keep *) wire               mem_valid;
-   (* keep *) wire mem_instr;
+   
+   (* keep *) `rvformal_rand_reg [31:0] mem_rdata;
+
+   (* keep *) wire        mem_valid;
+   (* keep *) wire        mem_instr;
    (* keep *) wire [31:0] mem_addr;
    (* keep *) wire [31:0] mem_wdata;
-   (* keep *) wire [3:0] mem_wstrb;
+   (* keep *) wire [3:0]  mem_wstrb;
 
-	VeldtFV uut (
+	LionFV uut (
 	  .clock     (clock),
 	  .reset     (reset),
 		     .mem_valid (mem_valid),

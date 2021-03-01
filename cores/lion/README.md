@@ -1,1 +1,1 @@
-formal verification of the veldt
+formal verification of the LION
