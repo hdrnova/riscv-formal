@@ -1,18 +1,29 @@
 module testbench (
   input clk,
-  input [31:0] instr
+
+  output mem_valid,
+  output mem_instr,
+  output [31:0] mem_addr,
+  output [31:0] mem_wdata,
+  output [3:0]  mem_wstrb,
+  input [31:0]  mem_rdata
 );
-  reg reset = 1;
+  reg reset = 0;
 
   always @(posedge clk)
-    reset <= 0;
+    reset <= 1;
 
   `RVFI_WIRES
 
-  VeldtFV dut (
+  LionFV dut (
     .clock (clk),
     .reset (reset),
-    .word (instr),
+    .mem_valid (mem_valid),
+    .mem_instr (mem_instr),
+    .mem_addr  (mem_addr),
+    .mem_wdata (mem_wdata),
+    .mem_wstrb (mem_wstrb),
+    .mem_rdata (mem_rdata),
     `RVFI_CONN
   );
 

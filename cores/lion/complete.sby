@@ -14,9 +14,7 @@ verilog_defines -D RISCV_FORMAL_XLEN=32
 verilog_defines -D RISCV_FORMAL_ILEN=32
 verilog_defines -D RISCV_FORMAL_ALIGNED_MEM
 read_verilog -sv rvfi_macros.vh
-read_verilog Instr_parseImmJ.v
-read_verilog Instr_parseInstr.v
-read_verilog VeldtFV.v
+read_verilog LionFV.v
 
 --pycode-begin--
 with open("../../insns/isa_rv32i.txt") as f:
@@ -30,9 +28,7 @@ prep -nordff -top testbench
 
 [files]
 complete.sv
-~/eda/clash/veldt/verilog/VeldtFV/VeldtFV/Instr_parseImmJ.v
-~/eda/clash/veldt/verilog/VeldtFV/VeldtFV/Instr_parseInstr.v
-~/eda/clash/veldt/verilog/VeldtFV/VeldtFV/VeldtFV.v
+../../../_build/verilog/LionFV/LionFV/LionFV.v
 ../../checks/rvfi_macros.vh
 ../../insns/isa_rv32i.v
 
