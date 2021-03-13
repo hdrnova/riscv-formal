@@ -21,6 +21,6 @@ prep -nordff -top testbench
 
 [files]
 dmemcheck.sv
-../../../_build/verilog/LionFV.topEntity/LionFV.v
+../../../_build/LionFV.topEntity/LionFV.v
 ../../checks/rvfi_macros.vh
 ../../checks/rvfi_dmem_check.sv
