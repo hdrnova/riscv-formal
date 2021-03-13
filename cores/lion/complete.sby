@@ -28,7 +28,7 @@ prep -nordff -top testbench
 
 [files]
 complete.sv
-../../../_build/verilog/LionFV/LionFV/LionFV.v
+../../../_build/verilog/LionFV.topEntity/LionFV.v
 ../../checks/rvfi_macros.vh
 ../../insns/isa_rv32i.v
 

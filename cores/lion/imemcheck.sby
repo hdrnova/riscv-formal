@@ -21,6 +21,6 @@ prep -nordff -top testbench
 
 [files]
 imemcheck.sv
-../../../_build/verilog/LionFV/LionFV/LionFV.v
+../../../_build/verilog/LionFV.topEntity/LionFV.v
 ../../checks/rvfi_macros.vh
 ../../checks/rvfi_imem_check.sv
