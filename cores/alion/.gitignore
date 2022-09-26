@@ -1,0 +1,9 @@
+/cover/
+/complete/
+/honest/
+/checks/
+/disasm.s
+/disasm.o
+/imemcheck/
+/dmemcheck/
+*~
